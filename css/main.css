@@ -7,13 +7,18 @@ body {
 	margin: 0;
 }
 
-div#container {
+div.container {
 	position: relative;
-	height: 330px;
+	height: 350px;
 }
 
-div#fixed {
-	position: fixed;
+div.container h2 {
+	margin-left: 110px;
+	margin-top: 3px;
+}
+
+div.fixed {
+	position: absolute;
 	left: 0;
 	top: 0;
 }
@@ -22,13 +27,13 @@ div.day {
 	position: absolute;
 	left: 0;
 	top: 0;
-	height: 330px;
+	height: 350px;
 }
 
-div#fixed h2 {
+div.fixed h3 {
 	margin: 0;
 	margin-left: -28px;
-	padding: 83px 0;
+	padding: 63px 0;
 	font-size: 2.3em;
 	-webkit-transform: rotate(90deg);
 }
