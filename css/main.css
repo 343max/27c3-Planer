@@ -1,0 +1,99 @@
+body {
+	font-family: 'Helvetica Neue';
+	font-size: 10px;
+	background-color: black;
+	color: white;
+}
+
+div#container {
+	position: relative;
+	height: 330px;
+}
+
+div#fixed {
+	position: fixed;
+	left: 0;
+	top: 0;
+}
+
+div.day {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 330px;
+}
+
+div#fixed h2 {
+	margin: 0;
+	padding: 48px 20px;
+	font-size: 6em;
+}
+
+div.room {
+	display: block;
+	height: 105px;
+}
+
+div.times {
+	display: block;
+	height: 2.5em;
+}
+
+div.times div {
+	position: absolute;
+	font-size: 3em;
+	font-weight: bold;
+	padding-left: 9px;
+}
+
+div.event {
+	display: block;
+	position: absolute;
+
+	border-radius: 5px;
+
+	overflow: hidden;
+	height: 80px;
+	padding: 5px;
+
+	background-color: rgba(0, 0, 0, 0.7);
+	-webkit-box-shadow: 0 0 5px #fff;
+}
+
+div.event.faved {
+	background-color: rgba(255, 185, 0, 0.7);
+	-webkit-box-shadow: 0 0 10px #ffb900;
+	color: black;
+}
+
+div.event h3, div.event h4, div.event p {
+	margin: 0;
+	padding: 0;
+}
+
+div.event p.description {
+	margin-top: 4px;
+}
+
+div.event a.fav {
+	cursor: pointer;
+	float: right;
+	font-size: 2em;
+	color: #ff9400;
+	opacity: 0.8;
+	margin-top: -6px;
+}
+
+div.event.fullsize {
+	z-index: 10;
+	background-color: black;
+	position: absolute;
+	height: 460px;
+	width: 300px !important;
+	top: 0;
+	left: 0 !important;
+}
+
+div.event.faved.fullsize {
+	background-color: rgba(255, 185, 0, 1);
+}
