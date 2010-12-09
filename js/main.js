@@ -100,19 +100,24 @@ $().ready(function() {
 			var snapTo = [];
 
 			times.sort(function(a, b) {return a.left - b.left;});
-			console.dir(times);
 			var lastStart = -1000;
-			var lastDrawn = -1000;
 			$.each(times, function() {
 				if(this.start == lastStart) return;
 				lastStart = this.start;
-				snapTo.push({top: 0, left: -this.left + 20});
-				if(this.start - 0.25 <= lastDrawn) return;
-				lastDrawn = this.start;
-				$(dayId + ' .times').append(
-					$('<div>').addClass('time').text(this.label).css('left', this.left + 'px')	
-				);
+				var timeLabel = $('<div>').addClass('time').text(this.label).css('left', this.left + 'px');
+				$(dayId + ' .times').append(timeLabel);
+				
+				snapTo.push({
+					top: 0,
+					left: -this.left + 20,
+					snapedIn: function() {
+						$('.time').removeClass('active');
+						timeLabel.addClass('active');
+					}
+				});
 			});
+
+			snapTo[0].snapedIn();
 
 			var container = $(dayId).parent();
 			container.css('width', (window.innerWidth - 1) + 'px').css('overflow', 'hidden');
@@ -125,7 +130,7 @@ $().ready(function() {
 		drawDayEvents('2010-12-30', '#day4');
 
 		var snapTo = [];
-		var dayHeight = $('#schedule').height() / 4;
+		var dayHeight = 350;
 		for(var i = 0; i < 4; i++) {
 			snapTo.push({left: 0, top: -dayHeight * i});
 		}

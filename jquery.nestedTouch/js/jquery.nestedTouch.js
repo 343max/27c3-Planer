@@ -66,7 +66,7 @@ jQuery.fn.touchDrag = function(settings) {
 	if(settings.kinetic) settings.elastic = true;
 
 	var distance = function(p1, p2) {
-		return Math.sqrt(Math.pow(p1.top - p2.top,  2) + Math.pow(p1.left - p2.left, 2));
+		return Math.sqrt(Math.pow(p1.top - p2.top, 2) + Math.pow(p1.left - p2.left, 2));
 	}
 
 	var execCallback = function(callbacks, params) {
@@ -264,6 +264,8 @@ jQuery.fn.touchDrag = function(settings) {
 							bestSnapPoint = i;
 						}
 					});
+
+					if(finalPosition.snapedIn) finalPosition.snapedIn();
 
 					position = finalPosition;
 

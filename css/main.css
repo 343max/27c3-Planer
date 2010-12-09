@@ -53,6 +53,11 @@ div.times div {
 	font-size: 3em;
 	font-weight: bold;
 	padding-left: 9px;
+	opacity: 0;
+}
+
+div.times div.active {
+	opacity: 1;
 }
 
 div.event {
