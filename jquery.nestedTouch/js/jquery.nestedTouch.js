@@ -1,8 +1,8 @@
 if (!console.dir) console.dir = function(a) { console.log(JSON.stringify(a)); };
 
 
-jQuery.fn.setWebkitPosition = function(x, y) { 
-	this.css('-webkit-transform', 'translate(' + x + 'px, ' + y + 'px)');
+jQuery.fn.setWebkitPosition = function(x, y) {
+	this.css('-webkit-transform', 'translate3d(' + x + 'px, ' + y + 'px, 0px)');
 }
 
 jQuery.fn.setWebkitPositionAnimated = function(x, y, duration, timingFunction, callback) {
@@ -13,7 +13,7 @@ jQuery.fn.setWebkitPositionAnimated = function(x, y, duration, timingFunction, c
 
 	$this.css( {
 		'-webkit-transition-duration': duration + 'ms',
-		'-webkit-transform': 'translate(' + x + 'px, ' + y + 'px)'
+		'-webkit-transform': 'translate3d(' + x + 'px, ' + y + 'px, 0px)'
 	} );
 
 	window.setTimeout(function() {
@@ -45,7 +45,8 @@ jQuery.fn.touchDrag = function(settings) {
 		onDragMove: null,
 		onDragEnd: null,
 		onKineticMovementEnd: null,
-		onSnapBackEnd: null
+		onSnapBackEnd: null,
+		animationCssClass: null
 	}, settings);
 
 	if(settings.boundingElement) {
@@ -136,6 +137,8 @@ jQuery.fn.touchDrag = function(settings) {
 		var offset = {deltaX: touchEvent.touches[0].clientX - position.left, deltaY: touchEvent.touches[0].clientY - position.top};
 
 		execCallback(settings.onDragStart, position);
+
+		if(settings.animationCssClass != null) $this.addClass(settings.animationCssClass);
 
 		$this.live('ontouchmove', function(jEvent, touchEvent) {
 			if (touchEvent.touches.length != 1)
@@ -229,6 +232,7 @@ jQuery.fn.touchDrag = function(settings) {
 
 					var snapBackEndCallback = function() {
 						execCallback(settings.onSnapBackEnd, {'top': top, 'left': left});
+						if(settings.animationCssClass != null) $this.removeClass(settings.animationCssClass);
 					}
 
 					if((currentPosition.top != finalPosition.top) || (currentPosition.left != finalPosition.left)) {

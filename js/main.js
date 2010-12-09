@@ -1,25 +1,3 @@
-jQuery.fn.setWebkitPosition = function(x, y) {
-	this.css('-webkit-transform', 'translate(' + x + 'px, ' + y + 'px)');
-}
-
-jQuery.fn.setWebkitPositionAnimated = function(x, y, duration, timingFunction, callback) {
-	if(!duration) duration = 500;
-	if(!timingFunction) timingFunction = 'ease-out';
-
-	$this = this;
-
-	$this.css( {
-		'-webkit-transition-duration': duration + 'ms',
-		'-webkit-transform': 'translate(' + x + 'px, ' + y + 'px)'
-	} );
-
-	window.setTimeout(function() {
-		$this.css('-webkit-transition-duration', '0');
-		if(callback) callback();
-
-	}, duration + 50);
-}
-
 $().ready(function() {
 	var hourWidth = 180;
 	var position = 0;
@@ -35,20 +13,20 @@ $().ready(function() {
 		var schedule = new Schedule(data.schedule);
 		console.dir(schedule.schedule);
 
-		var jumpToTime = function(time) {
-			currentTime = time;
-
-			$('div.day').setWebkitPositionAnimated(-(time - schedule.schedule.conference.day_change_float) * hourWidth, 0);
-		}
-
-		var drawDayEvents = function(day, dayId) {
+		var drawDayEvents = function(date, dayId) {
 
 			var times = {};
+			var day = schedule.schedule.day.byDate(date);
 
-			var drawRoomEvents = function(date, roomName, div) {
+			var timeToLeftPosition = function(time) {
+				if(time < schedule.schedule.conference.day_change_float) time += 24;
+				time -= day.timeStart;
+				return time * hourWidth + 20;
+			}
+
+			var drawRoomEvents = function(roomName, div) {
 				div = $(div);
 
-				var day = schedule.schedule.day.byDate(date);
 				var events = day.room.byName(roomName).event;
 
 				$.each(events, function() {
@@ -58,18 +36,15 @@ $().ready(function() {
 
 					var eventDiv = $('<div>').addClass('event');
 					if(favedEvents[slug]) eventDiv.addClass('faved');
-					var left = this.start_float;
-
-					if(this.start_float < schedule.schedule.conference.day_change_float) left += 24;
-
-					left -= day.timeStart;
+					
+					var left = timeToLeftPosition(this.start_float);
 
 					times[this.start] = {
 						left: left,
 						label: this.start
 					};
 
-					eventDiv.css('left', (left * hourWidth) + 'px').css('width', (hourWidth * this.duration_float) + 'px');
+					eventDiv.css('left', left + 'px').css('width', (hourWidth * this.duration_float) + 'px');
 
 					eventDiv.append(
 						$('<a>').addClass('fav').html('&#9733;').click(function(event) {
@@ -112,25 +87,26 @@ $().ready(function() {
 						}
 					}); */
 
-					myScroll = new iScroll(dayId, {desktopCompatibility:true});
-
 					div.append(eventDiv);
 				});
 
-				div.css('width', (day.timeEnd - day.timeStart) * hourWidth + 20 + 'px');
+				$('#container').css('width', (window.innerWidth - 1) + 'px').css('overflow', 'hidden');
+				$(dayId).touchScroll({boundingElement: $('#container'), direction: 'horizontal'});
+
+				div.css('width', timeToLeftPosition(day.timeEnd) + 20 + 'px');
 			}
 
-			drawRoomEvents(day, 'Saal 1', '#' + dayId + ' .saal1');
-			drawRoomEvents(day, 'Saal 2', '#' + dayId + ' .saal2');
-			drawRoomEvents(day, 'Saal 3', '#' + dayId + ' .saal3');
+			drawRoomEvents('Saal 1', dayId + ' .saal1');
+			drawRoomEvents('Saal 2', dayId + ' .saal2');
+			drawRoomEvents('Saal 3', dayId + ' .saal3');
 
 			$.each(times, function() {
 				$('#' + dayId + ' .times').append(
-					$('<div>').addClass('time').text(this.label).css('left', this.left * hourWidth + 'px')	
+					$('<div>').addClass('time').text(this.label).css('left', this.left + 'px')	
 				);
 			});
 		};
 
-		drawDayEvents('2010-12-27', 'day1');
+		drawDayEvents('2010-12-27', '#day1');
 	});
 });

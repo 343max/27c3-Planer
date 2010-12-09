@@ -3,6 +3,8 @@ body {
 	font-size: 10px;
 	background-color: black;
 	color: white;
+	padding: 0;
+	margin: 0;
 }
 
 div#container {
@@ -25,8 +27,10 @@ div.day {
 
 div#fixed h2 {
 	margin: 0;
-	padding: 48px 20px;
-	font-size: 6em;
+	margin-left: -28px;
+	padding: 83px 0;
+	font-size: 2.3em;
+	-webkit-transform: rotate(90deg);
 }
 
 div.room {
