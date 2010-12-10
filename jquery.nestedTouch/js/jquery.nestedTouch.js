@@ -1,25 +1,26 @@
 if (!console.dir) console.dir = function(a) { console.log(JSON.stringify(a)); };
 
 
-jQuery.fn.setWebkitPosition = function(x, y) {
-	this.css('-webkit-transform', 'translate3d(' + x + 'px, ' + y + 'px, 0px)');
+jQuery.fn.setWebkitPosition = function(x, y, translate3d) {
+	if(translate3d) {
+		this.css('-webkit-transform', 'translate3d(' + x + 'px, ' + y + 'px, 0px)');
+	} else {
+		this.css('-webkit-transform', 'translate(' + x + 'px, ' + y + 'px)');		
+	}
 }
 
-jQuery.fn.setWebkitPositionAnimated = function(x, y, duration, timingFunction, callback) {
+jQuery.fn.setWebkitPositionAnimated = function(x, y, duration, translate3d, timingFunction, callback) {
 	if(!duration) duration = 500;
 	if(!timingFunction) timingFunction = 'ease-out';
 
 	$this = this;
 
-	$this.css( {
-		'-webkit-transition-duration': duration + 'ms',
-		'-webkit-transform': 'translate3d(' + x + 'px, ' + y + 'px, 0px)'
-	} );
+	$this.css('-webkit-transition-duration', duration + 'ms');
+	$this.setWebkitPosition(x, y, translate3d);
 
 	window.setTimeout(function() {
 		$this.css('-webkit-transition-duration', '0');
 		if(callback) callback();
-		
 	}, duration + 50);
 }
 
@@ -46,7 +47,8 @@ jQuery.fn.touchDrag = function(settings) {
 		onDragEnd: null,
 		onKineticMovementEnd: null,
 		onSnapBackEnd: null,
-		animationCssClass: null
+		animationCssClass: null,
+		translate3d: false
 	}, settings);
 
 	if(settings.boundingElement) {
@@ -199,7 +201,7 @@ jQuery.fn.touchDrag = function(settings) {
 
 			execCallback(settings.onDragMove, {'top': top, 'left': left});
 
-			$this.setWebkitPosition(left, top);
+			$this.setWebkitPosition(left, top, settings.translate3d);
 		});
 
 		$this.live('ontouchend', function(jEvent, touchEvent) {
@@ -238,7 +240,7 @@ jQuery.fn.touchDrag = function(settings) {
 					}
 
 					if((currentPosition.top != finalPosition.top) || (currentPosition.left != finalPosition.left)) {
-						$this.setWebkitPositionAnimated(finalPosition.left, finalPosition.top, settings.elasticDuration, settings.elasticAnimationTimingFunction, snapBackEndCallback);
+						$this.setWebkitPositionAnimated(finalPosition.left, finalPosition.top, settings.elasticDuration, settings.translate3d, settings.elasticAnimationTimingFunction, snapBackEndCallback);
 					} else {
 						snapBackEndCallback();
 					}
@@ -285,7 +287,7 @@ jQuery.fn.touchDrag = function(settings) {
 					}
 				}
 
-				$this.setWebkitPositionAnimated(position.left, position.top, settings.kineticDuration, settings.kineticTimingFunction, snapBack);
+				$this.setWebkitPositionAnimated(position.left, position.top, settings.kineticDuration, settings.translate3d, settings.kineticTimingFunction, snapBack);
 			}
 		});
 	});
