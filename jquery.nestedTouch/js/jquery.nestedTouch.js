@@ -75,7 +75,6 @@ jQuery.fn.touchDrag = function(settings) {
 
 		params.boundingBox = settings.boundingBox;
 
-		//console.log((params.top - settings.boundingBox.top) + ' - ' + (settings.boundingBox.bottom - settings.boundingBox.top));
 		params.relativePositionY = (params.top - settings.boundingBox.top) / (settings.boundingBox.bottom - settings.boundingBox.top);
 		params.relativePositionX = (params.left - settings.boundingBox.left) / (settings.boundingBox.right - settings.boundingBox.left);
 
@@ -181,23 +180,26 @@ jQuery.fn.touchDrag = function(settings) {
 				var newTime = (new Date()).getTime();
 				var dTime = newTime - time;
 
-				xSpeed = (lastLeft - left) / dTime * 1000;
-				ySpeed = (lastTop - top) / dTime * 1000;
+				if(dTime > 20) {
+					xSpeed = (lastLeft - left) / dTime * 1000;
+					ySpeed = (lastTop - top) / dTime * 1000;
 
-				if(xSpeed > settings.maxSpeed) xSpeed = settings.maxSpeed;
-				if(xSpeed < -settings.maxSpeed) xSpeed = -settings.maxSpeed;
-				if(ySpeed > settings.maxSpeed) ySpeed = settings.maxSpeed;
-				if(ySpeed < -settings.maxSpeed) ySpeed = -settings.maxSpeed;
+					if(xSpeed > settings.maxSpeed) xSpeed = settings.maxSpeed;
+					if(xSpeed < -settings.maxSpeed) xSpeed = -settings.maxSpeed;
+					if(ySpeed > settings.maxSpeed) ySpeed = settings.maxSpeed;
+					if(ySpeed < -settings.maxSpeed) ySpeed = -settings.maxSpeed;
 
-				time = newTime;
+					lastTop = top;
+					lastLeft = left;
+
+					time = newTime;
+				}
+
 			}
 
 			execCallback(settings.onDragMove, {'top': top, 'left': left});
 
 			$this.setWebkitPosition(left, top);
-
-			lastTop = top;
-			lastLeft = left;
 		});
 
 		$this.live('ontouchend', function(jEvent, touchEvent) {

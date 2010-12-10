@@ -100,25 +100,27 @@ $().ready(function() {
 			var snapTo = [];
 
 			times.sort(function(a, b) {return a.left - b.left;});
-			var lastStart = -1000;
+			var lastStart = -1;
 			$.each(times, function() {
 				if(this.start == lastStart) return;
-				lastStart = this.start;
 				var timeLabel = $('<div>').addClass('time').text(this.label).css('left', this.left + 'px');
+				if(lastStart == -1) timeLabel.addClass('active');
 				$(dayId + ' .times').append(timeLabel);
-				
+
 				snapTo.push({
 					top: 0,
 					left: -this.left + 20,
 					snapedIn: function() {
-						$('.time').removeClass('active');
+						$(dayId + ' .time').removeClass('active');
 						timeLabel.addClass('active');
 					}
 				});
+
+				lastStart = this.start;
 			});
 
 			snapTo[0].snapedIn();
-
+			
 			var container = $(dayId).parent();
 			container.css('width', (window.innerWidth - 1) + 'px').css('overflow', 'hidden');
 			$(dayId).touchScroll({boundingElement: container, direction: 'horizontal', snapTo: snapTo, abortOnWrongDirection: true, kineticDuration: 200});
@@ -137,6 +139,6 @@ $().ready(function() {
 
 		var container = $('#scroller');
 		container.css('height', window.innerHeight + 'px').css('overflow', 'hidden');
-		$('#schedule').css('height', dayHeight * 4 + 600 + 'px').touchScroll({boundingElement: container, direction: 'vertical', abortOnWrongDirection: true, snapTo: snapTo, kineticDuration: 900});
+		$('#schedule').css('height', dayHeight * 4 + 600 + 'px').touchScroll({boundingElement: container, direction: 'vertical', abortOnWrongDirection: true, snapTo: snapTo, kineticDuration: 400});
 	});
 });
