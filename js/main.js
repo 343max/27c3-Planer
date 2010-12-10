@@ -3,7 +3,7 @@ $().ready(function() {
 	var position = 0;
 	var currentTime = 0;
 	if(window.innerWidth <= 320) {
-		hourWidth = (window.innerWidth - 40) / 2;
+		hourWidth = (window.innerWidth) / 2;
 	}
 
 	var favedEvents = JSON.parse(localStorage.getItem('favedEvents'));
@@ -103,16 +103,13 @@ $().ready(function() {
 			var lastStart = -1;
 			$.each(times, function() {
 				if(this.start == lastStart) return;
-				var timeLabel = $('<div>').addClass('time').text(this.label).css('left', this.left + 'px');
-				if(lastStart == -1) timeLabel.addClass('active');
-				$(dayId + ' .times').append(timeLabel);
+				var label = this.label;
 
 				snapTo.push({
 					top: 0,
 					left: -this.left + 20,
 					snapedIn: function() {
-						$(dayId + ' .time').removeClass('active');
-						timeLabel.addClass('active');
+						$(dayId).parent().find('.startTime').text(label);
 					}
 				});
 

@@ -13,8 +13,17 @@ div.container {
 }
 
 div.container h2 {
-	margin-left: 110px;
+	font-size: 4em;
+	font-weight: bold;
+	margin-left: 25px;
 	margin-top: 3px;
+}
+
+div.container h2 sup {
+	font-size: 0.5em;
+}
+
+div.container h2 span.startTime {
 }
 
 div.fixed {
@@ -28,6 +37,7 @@ div.day {
 	left: 0;
 	top: 0;
 	height: 350px;
+	padding-top: 40px;
 }
 
 div.fixed h3 {
@@ -50,8 +60,6 @@ div.times {
 
 div.times div {
 	position: absolute;
-	font-size: 3em;
-	font-weight: bold;
 	padding-left: 9px;
 	opacity: 0;
 }
