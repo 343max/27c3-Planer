@@ -119,3 +119,22 @@ div.event.fullsize {
 div.event.faved.fullsize {
 	background-color: rgba(255, 185, 0, 1);
 }
+
+div#toolbar {
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+}
+
+div#toolbar a {
+	font-size: 1.8em;
+	font-weight: bold;
+	color: white;
+	text-decoration: none;
+	margin-left: 10px;
+	padding: 3px 8px;
+	cursor: pointer;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#659cf2), to(#2c64cd));
+	border-radius: 5px;
+	-webkit-box-shadow: 0 0 5px #fff;
+}

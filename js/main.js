@@ -3,7 +3,7 @@ $().ready(function() {
 	var position = 0;
 	var currentTime = 0;
 	if(window.innerWidth <= 320) {
-		hourWidth = (window.innerWidth) / 2;
+		hourWidth = (window.innerWidth) / 2 - 40;
 	}
 
 	var favedEvents = JSON.parse(localStorage.getItem('favedEvents'));
@@ -13,6 +13,8 @@ $().ready(function() {
 		var schedule = new Schedule(data.schedule);
 		console.dir(schedule.schedule);
 
+		var days = [];
+
 		var drawDayEvents = function(date, dayId) {
 			var times = [];
 			var day = schedule.schedule.day.byDate(date);
@@ -21,6 +23,7 @@ $().ready(function() {
 				if(time < schedule.schedule.conference.day_change_float) time += 24;
 				return time - day.timeStart;
 			}
+			
 			var timeToLeftPosition = function(time) {
 				return timeToRelativeTime(time) * hourWidth + 20;
 			};
@@ -73,20 +76,6 @@ $().ready(function() {
 						eventDiv.append($('<p>').addClass('persons').text(personString));
 					}
 
-					/* eventDiv.append($('<p>').addClass('description').text(this.description));
-					eventDiv.append($('<p>').addClass('abstract').text(this.abstract)); */
-
-					/* eventDiv.click(function() {
-						var $this = $(this);
-
-						if($this.hasClass('fullsize')) {
-							$this.removeClass('fullsize');
-						} else {
-							$('div.event').removeClass('fullsize');
-							$this.addClass('fullsize');
-						}
-					}); */
-
 					div.append(eventDiv);
 				});
 
@@ -110,11 +99,30 @@ $().ready(function() {
 					left: -this.left + 20,
 					snapedIn: function() {
 						$(dayId).parent().find('.startTime').text(label);
-					}
+					},
+					start: this.start
 				});
 
 				lastStart = this.start;
 			});
+
+			var scrollToTime = function(date) {
+				var startTime = timeToRelativeTime(date.getHours() + date.getMinutes() / 60);
+				var bestEvent = snapTo[0];
+
+				$.each(snapTo, function() {
+					if(this.start < startTime) bestEvent = this;
+				});
+
+				$(dayId).setWebkitPositionAnimated(bestEvent.left, 0, 700, true);
+				bestEvent.snapedIn();
+			};
+
+			days.push({scrollToTime: scrollToTime});
+
+			$(dayId).sayHello = function() {
+				alert('Hello ' + roomName);
+			}
 
 			snapTo[0].snapedIn();
 
@@ -144,11 +152,39 @@ $().ready(function() {
 		if($.clientSupportsTouch()) {
 			var container = $('#scroller');
 			container.css('height', window.innerHeight + 'px').css('overflow', 'hidden');
-			$('#schedule').css('height', dayHeight * 4 + 600 + 'px').touchScroll({boundingElement: container, direction: 'vertical', abortOnWrongDirection: true, snapTo: snapTo, kineticDuration: 400});
+			$('#schedule').css('height', dayHeight * 4 + window.innerWidth * 2 + 'px')
+						.touchScroll({boundingElement: container, direction: 'vertical', abortOnWrongDirection: true, snapTo: snapTo, kineticDuration: 400});
 
 			window.addEventListener('orientationchange', function() {
 				container.css('height', window.innerHeight + 'px');
 			});
+		}
+
+		if(!$.clientSupportsTouch()) {
+			$('#now').hide();
+		} else {
+			var scrollToTime = function(time) {
+				var start = new Date(2010, 12-1, 27);
+				var end = new Date(2010, 12-1, 31);
+				if((time < start) || (time > end)) {
+					time.setYear(2010);
+					time.setMonth(12-1);
+					time.setDate(27);
+				}
+
+				var day = time.getDate() - 27;
+				$('#schedule').setWebkitPositionAnimated(0, -dayHeight * day, 400, true);
+				$.each(days, function() {
+					this.scrollToTime(time);
+				});
+			};
+
+			var scrollToNow = function() {
+				scrollToTime(new Date());
+			}
+
+			$('#now').click(scrollToNow);
+			scrollToNow();
 		}
 	});
 });
