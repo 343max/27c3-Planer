@@ -1,5 +1,8 @@
 if (!console.dir) console.dir = function(a) { console.log(JSON.stringify(a)); };
 
+jQuery.clientSupportsTouch = function() {
+	return !(document.ontouchmove === undefined);
+}
 
 jQuery.fn.setWebkitPosition = function(x, y, translate3d) {
 	if(translate3d) {
