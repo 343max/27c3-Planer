@@ -117,10 +117,17 @@ $().ready(function() {
 			});
 
 			snapTo[0].snapedIn();
-			
-			var container = $(dayId).parent();
-			container.css('width', (window.innerWidth - 1) + 'px').css('overflow', 'hidden');
-			$(dayId).touchScroll({boundingElement: container, direction: 'horizontal', snapTo: snapTo, abortOnWrongDirection: true, kineticDuration: 200});
+
+			if($.clientSupportsTouch()) {
+				var container = $(dayId).parent();
+				container.css('width', (window.innerWidth - 1) + 'px').css('overflow', 'hidden');
+				$(dayId).touchScroll({boundingElement: container, direction: 'horizontal', snapTo: snapTo, abortOnWrongDirection: true, kineticDuration: 200});
+
+
+				window.addEventListener('orientationchange', function() {
+					container.css('width', (window.innerWidth - 1) + 'px');
+				});
+			}
 		};
 
 		drawDayEvents('2010-12-27', '#day1');
@@ -134,8 +141,14 @@ $().ready(function() {
 			snapTo.push({left: 0, top: -dayHeight * i});
 		}
 
-		var container = $('#scroller');
-		container.css('height', window.innerHeight + 'px').css('overflow', 'hidden');
-		$('#schedule').css('height', dayHeight * 4 + 600 + 'px').touchScroll({boundingElement: container, direction: 'vertical', abortOnWrongDirection: true, snapTo: snapTo, kineticDuration: 400});
+		if($.clientSupportsTouch()) {
+			var container = $('#scroller');
+			container.css('height', window.innerHeight + 'px').css('overflow', 'hidden');
+			$('#schedule').css('height', dayHeight * 4 + 600 + 'px').touchScroll({boundingElement: container, direction: 'vertical', abortOnWrongDirection: true, snapTo: snapTo, kineticDuration: 400});
+
+			window.addEventListener('orientationchange', function() {
+				container.css('height', window.innerHeight + 'px');
+			});
+		}
 	});
 });

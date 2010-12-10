@@ -1,4 +1,8 @@
 
+jQuery.clientSupportsTouch = function() {
+	return !(document.ontouchmove === undefined);
+}
+
 jQuery.fn.touchScroll = function(settings) {
 	settings = jQuery.extend({
 		kinetic: true,
