@@ -4,10 +4,13 @@ NETWORK:
 /json/lastUpdate.json
 /json/schedule.en.json
 
-CACHE:
-/jquery.nestedTouch/js/jquery.nestedTouchScroll.js
-/jquery.nestedTouch/js/jquery.nestedTouch.js
-/js/main.js
-/js/jquery-1.4.4.min.js
+# For reasons unknown to me, the snapTo feature doesn't work when all javascript files are cached. Don't know at all why.
 /js/schedule.js
+
+CACHE:
+/
 /css/main.css
+/js/jquery-1.4.4.min.js
+/js/main.js
+/jquery.nestedTouch/js/jquery.nestedTouch.js
+/jquery.nestedTouch/js/jquery.nestedTouchScroll.js
