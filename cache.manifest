@@ -1,0 +1,13 @@
+CACHE MANIFEST
+
+NETWORK:
+/json/lastUpdate.json
+/json/schedule.en.json
+
+CACHE:
+/jquery.nestedTouch/js/jquery.nestedTouchScroll.js
+/jquery.nestedTouch/js/jquery.nestedTouch.js
+/js/main.js
+/js/jquery-1.4.4.min.js
+/js/schedule.js
+/css/main.css
