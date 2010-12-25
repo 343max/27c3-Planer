@@ -9,9 +9,8 @@ $().ready(function() {
 	var favedEvents = JSON.parse(localStorage.getItem('favedEvents'));
 	if(!favedEvents) favedEvents = {};
 
-	$.getJSON('json/schedule.en.json', function(data) {
+	var drawSchedule = function(data) {
 		var schedule = new Schedule(data.schedule);
-		console.dir(schedule.schedule);
 
 		var days = [];
 
@@ -185,6 +184,22 @@ $().ready(function() {
 
 			$('#now').click(scrollToNow);
 			scrollToNow();
+		}
+	};
+
+	var scheduleJson = localStorage.getItem('schedule');
+	if(scheduleJson) {
+		drawSchedule(JSON.parse(scheduleJson));
+	}
+
+	$.getJSON('json/lastUpdate.json', function(lastUpdate) {
+		if(lastUpdate != localStorage.getItem('lastUpdate')) {
+			localStorage.setItem('lastUpdate', lastUpdate);
+
+			$.get('json/schedule.en.json', function(data) {
+				localStorage.setItem('schedule', data);
+				document.location.reload();
+			});
 		}
 	});
 });

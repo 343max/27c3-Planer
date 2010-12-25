@@ -6,5 +6,10 @@ $xmlStringContents = file_get_contents('http://events.ccc.de/congress/2010/Fahrp
 $jsonContents = xml2json::transformXmlStringToJson($xmlStringContents);
 
 if($jsonContents) {
-	file_put_contents(dirname(dirname(__FILE__)) . '/json/schedule.en.json', $jsonContents);
+	$jsonFile = dirname(dirname(__FILE__)) . '/json/schedule.en.json';
+	$lastUpdateFile = dirname(dirname(__FILE__)) . '/json/lastUpdate.json';
+	if(@file_get_contents($jsonFile) != $jsonContents) {
+		file_put_contents($jsonFile, $jsonContents);
+		file_put_contents($lastUpdateFile, json_encode(filemtime($jsonFile)));
+	}
 }
