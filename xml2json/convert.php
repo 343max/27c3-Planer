@@ -2,7 +2,10 @@
 
 require_once('xml2json.php');
 
-$xmlStringContents = file_get_contents('http://events.ccc.de/congress/2010/Fahrplan/schedule.en.xml');
+$currentyear = date("Y");
+$url = "http://events.ccc.de/congress/$currentyear/Fahrplan/schedule.en.xml";
+
+$xmlStringContents = file_get_contents($url);
 $jsonContents = xml2json::transformXmlStringToJson($xmlStringContents);
 
 if (!is_dir('../json')) {
@@ -17,3 +20,5 @@ if($jsonContents) {
 		file_put_contents($lastUpdateFile, json_encode(filemtime($jsonFile)));
 	}
 }
+
+?>
