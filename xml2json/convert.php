@@ -5,6 +5,10 @@ require_once('xml2json.php');
 $xmlStringContents = file_get_contents('http://events.ccc.de/congress/2010/Fahrplan/schedule.en.xml');
 $jsonContents = xml2json::transformXmlStringToJson($xmlStringContents);
 
+if (!is_dir('../json')) {
+	mkdir('../json');
+}
+
 if($jsonContents) {
 	$jsonFile = dirname(dirname(__FILE__)) . '/json/schedule.en.json';
 	$lastUpdateFile = dirname(dirname(__FILE__)) . '/json/lastUpdate.json';
