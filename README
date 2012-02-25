@@ -1,3 +1,1 @@
-Start xml2json/convert.php to download the 27c3 Schedule and convert it to json.
-
-Simply change the url in convert.php line 3 if you want to apply this to your own pentabarf event.
+This is a schedule for the Chaos Communication Congress to use it just start xml2json/convert.php to download the schedule and to convert into json.
