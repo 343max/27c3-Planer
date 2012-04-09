@@ -2,6 +2,7 @@ $().ready(function() {
 	var hourWidth = 180;
 	var position = 0;
 	var currentTime = 0;
+	var currentyear = new Date().getFullYear();
 	if(window.innerWidth <= 320) {
 		hourWidth = (window.innerWidth) / 2 - 40;
 	}
@@ -137,10 +138,10 @@ $().ready(function() {
 			}
 		};
 
-		drawDayEvents('2010-12-27', '#day1');
-		drawDayEvents('2010-12-28', '#day2');
-		drawDayEvents('2010-12-29', '#day3');
-		drawDayEvents('2010-12-30', '#day4');
+		drawDayEvents(currentyear+'-12-27', '#day1');
+		drawDayEvents(currentyear+'-12-28', '#day2');
+		drawDayEvents(currentyear+'-12-29', '#day3');
+		drawDayEvents(currentyear+'-12-30', '#day4');
 
 		var snapTo = [];
 		var dayHeight = 350;
@@ -163,10 +164,10 @@ $().ready(function() {
 			$('#now').hide();
 		} else {
 			var scrollToTime = function(time) {
-				var start = new Date(2010, 12-1, 27);
-				var end = new Date(2010, 12-1, 31);
+				var start = new Date(currentyear, 12-1, 27);
+				var end = new Date(currentyear, 12-1, 31);
 				if((time < start) || (time > end)) {
-					time.setYear(2010);
+					time.setYear(currentyear);
 					time.setMonth(12-1);
 					time.setDate(27);
 				}
